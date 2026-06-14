@@ -1,6 +1,7 @@
 const CUSTOMER_SITES = {
-    // 速度标签基于 2026-06-14 国内直连复测中位数：
-    // 极速 <= 100ms，快速 <= 350ms，普通 <= 800ms，较慢 > 800ms，直连不可用表示当前直连搜索未通过。
+    // 速度标签基于 2026-06-14 国内直连/VPN 复测中位数：
+    // 极速 <= 100ms，快速 <= 350ms，普通 <= 800ms，较慢 > 800ms。
+    // VPN可用表示显式走 127.0.0.1:4780 可搜索；搜索不可用表示当前搜索接口未通过。
 
     // ===== 原有资源 =====
     // 1. 非凡资源 (HTTPS版 - 强烈推荐，最稳)
@@ -21,7 +22,7 @@ const CUSTOMER_SITES = {
     // 4. 索尼资源 (原本就是HTTPS，保留)
     suoni: {
         api: 'https://suoniapi.com/api.php/provide/vod/',
-        name: '【直连不可用】索尼资源',
+        name: '【搜索不可用】索尼资源',
     },
 
     // ===== 新增可用资源（2026-06-13 测试验证）=====
@@ -33,7 +34,7 @@ const CUSTOMER_SITES = {
     // 6. 丫丫资源
     yaya: {
         api: 'https://cj.yayazy.net/api.php/provide/vod/',
-        name: '【直连不可用】丫丫资源',
+        name: '【搜索不可用】丫丫资源',
     },
     // 7. 光速资源
     guangsu: {
@@ -43,17 +44,17 @@ const CUSTOMER_SITES = {
     // 8. 大地资源
     dadi: {
         api: 'https://dadiapi.com/api.php',
-        name: '【直连不可用】大地资源',
+        name: '【搜索不可用】大地资源',
     },
     // 9. 天涯影视资源
     tianya: {
         api: 'https://tyyszyapi.com/api.php/provide/vod',
-        name: '【直连不可用】天涯影视',
+        name: '【搜索不可用】天涯影视',
     },
     // 10. 如意资源
     ruyi: {
         api: 'https://cj.rycjapi.com/api.php/provide/vod/at/xml',
-        name: '【直连不可用】如意资源',
+        name: '【搜索不可用】如意资源',
     },
     // 11. 无尽资源
     wujin: {
@@ -78,7 +79,7 @@ const CUSTOMER_SITES = {
     // 15. 樱花资源
     yinghua: {
         api: 'http://m3u8.apiyhzy.com/api.php/provide/vod',
-        name: '【直连不可用】樱花资源',
+        name: '【搜索不可用】樱花资源',
     },
     // 16. 爱坤资源（已有ikun，这是别名）
     aikun: {
@@ -93,7 +94,7 @@ const CUSTOMER_SITES = {
     // 18. 牛牛资源
     niuniu: {
         api: 'https://api.niuniuzy.me/api.php/provide/vod/',
-        name: '【直连不可用】牛牛资源',
+        name: '【搜索不可用】牛牛资源',
     },
     // 19. 猫眼资源
     maoyan: {
@@ -119,7 +120,7 @@ const CUSTOMER_SITES = {
     // 23. 茅台资源
     maotai: {
         api: 'https://caiji.maotaizy.cc/api.php/provide/vod/at/josn/',
-        name: '【直连不可用】茅台资源',
+        name: '【VPN可用·较慢】茅台资源',
     },
     // 24. 豆瓣资源
     douban: {
@@ -145,7 +146,7 @@ const CUSTOMER_SITES = {
     // 28. 闪电资源
     shandian: {
         api: 'http://sdzyapi.com/api.php/provide/vod/from/sdm3u8',
-        name: '【直连不可用】闪电资源',
+        name: '【搜索不可用】闪电资源',
     },
     // 29. 飘零影院
     piaolin: {
