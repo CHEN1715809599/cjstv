@@ -1,3 +1,50 @@
+async function fetchApiJson(apiUrl, headers, timeoutMs = 10000) {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
+
+    try {
+        const proxiedUrl = await window.ProxyAuth?.addAuthToProxyUrl ?
+            await window.ProxyAuth.addAuthToProxyUrl(PROXY_URL + encodeURIComponent(apiUrl)) :
+            PROXY_URL + encodeURIComponent(apiUrl);
+
+        const response = await fetch(proxiedUrl, {
+            headers,
+            signal: controller.signal
+        });
+
+        if (!response.ok) {
+            throw new Error(`详情请求失败: ${response.status}`);
+        }
+
+        return await response.json();
+    } finally {
+        clearTimeout(timeoutId);
+    }
+}
+
+async function fetchVideoDetail(apiBaseUrl, id) {
+    const detailPaths = API_CONFIG.detail.fallbackPaths || [API_CONFIG.detail.path];
+    let lastError;
+
+    for (const detailPath of detailPaths) {
+        const detailUrl = `${apiBaseUrl}${detailPath}${id}`;
+
+        try {
+            const data = await fetchApiJson(detailUrl, API_CONFIG.detail.headers);
+
+            if (data && data.list && Array.isArray(data.list) && data.list.length > 0) {
+                return { data, detailUrl };
+            }
+
+            lastError = new Error('获取到的详情内容无效');
+        } catch (error) {
+            lastError = error;
+        }
+    }
+
+    throw lastError || new Error('获取到的详情内容无效');
+}
+
 // 改进的API请求处理函数
 async function handleApiRequest(url) {
     const customApi = url.searchParams.get('customApi') || '';
@@ -109,40 +156,10 @@ async function handleApiRequest(url) {
                 return await handleCustomApiSpecialDetail(id, customApi);
             }
             
-            const detailUrl = customApi
-                ? `${customApi}${API_CONFIG.detail.path}${id}`
-                : `${API_SITES[sourceCode].api}${API_CONFIG.detail.path}${id}`;
-            
-            // 添加超时处理
-            const controller = new AbortController();
-            const timeoutId = setTimeout(() => controller.abort(), 10000);
+            const detailBaseUrl = customApi ? customApi : API_SITES[sourceCode].api;
             
             try {
-                // 添加鉴权参数到代理URL
-                const proxiedUrl = await window.ProxyAuth?.addAuthToProxyUrl ? 
-                    await window.ProxyAuth.addAuthToProxyUrl(PROXY_URL + encodeURIComponent(detailUrl)) :
-                    PROXY_URL + encodeURIComponent(detailUrl);
-                    
-                const response = await fetch(proxiedUrl, {
-                    headers: API_CONFIG.detail.headers,
-                    signal: controller.signal
-                });
-                
-                clearTimeout(timeoutId);
-                
-                if (!response.ok) {
-                    throw new Error(`详情请求失败: ${response.status}`);
-                }
-                
-                // 解析JSON
-                const data = await response.json();
-                
-                // 检查返回的数据是否有效
-                if (!data || !data.list || !Array.isArray(data.list) || data.list.length === 0) {
-                    throw new Error('获取到的详情内容无效');
-                }
-                
-                // 获取第一个匹配的视频详情
+                const { data, detailUrl } = await fetchVideoDetail(detailBaseUrl, id);
                 const videoDetail = data.list[0];
                 
                 // 提取播放地址
@@ -192,7 +209,6 @@ async function handleApiRequest(url) {
                     }
                 });
             } catch (fetchError) {
-                clearTimeout(timeoutId);
                 throw fetchError;
             }
         }

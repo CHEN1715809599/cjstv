@@ -99,13 +99,14 @@ const CUSTOMER_SITES = {
     },
     // 20. 电影天堂
     dytt: {
-        api: 'http://caiji.dyttzyapi.com/api.php/provide/vod/at/xml/',
+        api: 'https://caiji.dyttzyapi.com/api.php/provide/vod/',
         name: '【影视】电影天堂',
     },
     // 21. 番号资源
     fanhao: {
         api: 'http://fhapi9.com/api.php/provide/vod/',
         name: '【影视】番号资源',
+        adult: true,
     },
     // 22. 百度资源
     baidu: {
@@ -126,6 +127,7 @@ const CUSTOMER_SITES = {
     didi: {
         api: 'https://api.ddapi.cc/api.php/provide/vod/',
         name: '【影视】迪迪资源',
+        adult: true,
     },
     // 26. 速播资源
     subo: {
@@ -146,6 +148,33 @@ const CUSTOMER_SITES = {
     piaolin: {
         api: 'https://p2100.net/api.php/provide/vod/',
         name: '【影视】飘零影院',
+    },
+
+    // ===== 新增可用资源（2026-06-14 测试验证）=====
+    // 30. 红牛资源
+    hongniu: {
+        api: 'https://www.hongniuzy2.com/api.php/provide/vod/',
+        name: '【影视】红牛资源',
+    },
+    // 31. U酷资源
+    ukoo: {
+        api: 'https://api.ukuapi.com/api.php/provide/vod/',
+        name: '【影视】U酷资源',
+    },
+    // 32. 火狐资源
+    huohu: {
+        api: 'https://hhzyapi.com/api.php/provide/vod/',
+        name: '【影视】火狐资源',
+    },
+    // 33. 虎牙资源
+    huya: {
+        api: 'https://www.huyaapi.com/api.php/provide/vod/',
+        name: '【影视】虎牙资源',
+    },
+    // 34. 新浪资源
+    xinlang: {
+        api: 'http://api.xinlangapi.com/xinlangapi.php/provide/vod/',
+        name: '【影视】新浪资源',
     },
 };
 
